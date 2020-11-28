@@ -5,10 +5,10 @@ class Footer extends Component {
     return (
       <div className={"flex flex-wrap uppercase text-sm uppercase text-gray-300 font-semibold"}>
         <div className={"w-full text-center lg:w-1/2 lg:text-left"}>
-          &copy; OpenType - by <a href={"https://cameronct.com/"} className={"text-indigo-400 hover:text-indigo-500"} rel={"noopener noreferrer"} target={"_blank"}>CameronCT</a>.
+          OpenType - by <a href={"https://cameronct.com/"} className={"text-indigo-400 hover:text-indigo-500"} rel={"noopener noreferrer"} target={"_blank"}>CameronCT</a>.
         </div>
         <div className={"w-full text-center lg:w-1/2 lg:text-right"}>
-          &copy; Contribute on <a href={"https://github.com/CameronCT/OpenType"} className={"text-indigo-400 hover:text-indigo-500"} rel={"noopener noreferrer"} target={"_blank"}>GitHub</a>.
+          Contribute on <a href={"https://github.com/CameronCT/OpenType"} className={"text-indigo-400 hover:text-indigo-500"} rel={"noopener noreferrer"} target={"_blank"}>GitHub</a>.
         </div>
       </div>
     )
