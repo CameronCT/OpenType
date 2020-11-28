@@ -11,6 +11,11 @@ interface WordData {
   correct: string[];
 }
 
+interface PlayerData {
+  WPM: number;
+  Accuracy: number;
+}
+
 interface IProps {
   text: string;
 }
@@ -23,6 +28,7 @@ interface IState {
   textInput: string;
   currentIndex: number;
   wordData: WordData;
+  playerData: PlayerData;
   gameStatus: number;
   gameTimer: number;
 }
@@ -40,6 +46,10 @@ class GameContainer extends Component<IProps, IState> {
       trace: [],
       correct: [],
       incorrect: []
+    },
+    playerData: {
+      WPM: 0,
+      Accuracy: 0
     },
     gameStatus: 0,
     gameTimer: 0
@@ -84,6 +94,14 @@ class GameContainer extends Component<IProps, IState> {
 
     wordData.trace.push({ value: text[currentIndex], correct: isCorrect });
 
+    /*
+     * TODO: Calculate WPM
+     */
+
+
+    /*
+     * Reset Input
+     */
     this.setState({ textInput: '' });
   };
 
