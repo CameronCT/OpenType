@@ -81,6 +81,9 @@ class GameContainer extends Component<IProps, IState> {
   componentWillUnmount() {
     if (this.countdown)
       clearInterval(this.countdown);
+
+    if (this.refresh)
+      clearInterval(this.refresh);
   }
 
   /**
@@ -134,13 +137,29 @@ class GameContainer extends Component<IProps, IState> {
     wordData.trace.push({ value: text[currentIndex], correct: isCorrect });
 
     /*
+     * Check if match is finished
+     */
+    if (wordData.trace.length === text.length) {
+      this.setState({ gameStatus: 2 });
+
+      if (this.refresh)
+        clearInterval(this.refresh);
+
+      if (this.countdown)
+        clearInterval(this.countdown);
+    }
+
+    /*
      * Calculate WPM and Update
      */
-    this.refresh = setInterval(() => {
-      const calculatePlayerData = this.calculatePlayer(gameStart, keystrokeData.correct, keystrokeData.incorrect, keystrokeData.trace);
-      playerData.WPM = calculatePlayerData.grossWPM;
-      this.setState({ playerData });
-    }, 50);
+    if (!this.refresh) {
+      this.refresh = setInterval(() => {
+        const calculatePlayerData = this.calculatePlayer(gameStart, keystrokeData.correct, keystrokeData.incorrect, keystrokeData.trace);
+        playerData.WPM = calculatePlayerData.grossWPM;
+        this.setState({ playerData });
+      }, 50);
+    }
+
 
     /*
      * Reset Input
