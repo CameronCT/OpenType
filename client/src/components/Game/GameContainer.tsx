@@ -28,9 +28,7 @@ interface IProps {
 
 interface IState {
   text: string[];
-  textBefore: string;
   textCurrent: string;
-  textAfter: string;
   textInput: string;
   currentIndex: number;
   wordData: WordData;
@@ -45,9 +43,7 @@ class GameContainer extends Component<IProps, IState> {
 
   state:IState = {
     text: [],
-    textBefore: '',
     textCurrent: '',
-    textAfter: '',
     textInput: '',
     currentIndex: 0,
     wordData: {
@@ -89,7 +85,10 @@ class GameContainer extends Component<IProps, IState> {
 
   /**
    * Calculates WPM and Accuracy
-   * @param correct, incorrect, trace
+   * @param startTime
+   * @param keystrokesCorrect
+   * @param keystrokesIncorrect
+   * @param keystrokesTrace
    */
   calculatePlayer = (startTime:number, keystrokesCorrect: number, keystrokesIncorrect: number, keystrokesTrace: number) => {
 
@@ -135,7 +134,7 @@ class GameContainer extends Component<IProps, IState> {
     wordData.trace.push({ value: text[currentIndex], correct: isCorrect });
 
     /*
-     * TODO: Calculate WPM
+     * Calculate WPM and Update
      */
     this.refresh = setInterval(() => {
       const calculatePlayerData = this.calculatePlayer(gameStart, keystrokeData.correct, keystrokeData.incorrect, keystrokeData.trace);
@@ -172,14 +171,16 @@ class GameContainer extends Component<IProps, IState> {
 
     this.setState({ textInput: currentValue})
 
-    if (currentValue && (currentIndex + 1) === text.length && currentValue === text[currentIndex] ||
+    if (
+      currentValue && (currentIndex + 1) === text.length && currentValue === text[currentIndex] ||
+      currentValue && (currentIndex + 1) === text.length && currentValue.length === text[currentIndex].length ||
       currentValue && currentIndex !== text.length && currentValue.includes(" ")
     )
       this.validateWord(currentValue);
   };
 
   render() {
-    const { text, textBefore, textAfter, gameTimer, gameStatus, textInput, currentIndex, playerData, wordData } = this.state;
+    const { text, gameTimer, gameStatus, textInput, currentIndex, playerData, wordData } = this.state;
 
     return text && (
       <div className={"game--container"}>
@@ -220,7 +221,7 @@ class GameContainer extends Component<IProps, IState> {
           </span>
         </div>
         <div>
-          <input type={"text"} name={"inputText"} value={textInput} onChange={this.updateInput} placeholder={"Enter your text here"} />
+          <input type={"text"} name={"inputText"} value={textInput} onChange={this.updateInput} placeholder={gameStatus !== 1 ? 'Enter your text here' : ''} autoComplete={"off"} />
         </div>
       </div>
     )
