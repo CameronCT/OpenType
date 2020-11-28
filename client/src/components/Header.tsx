@@ -6,8 +6,8 @@ class Header extends Component {
       <div className={"flex"}>
         <div className={"w-auto mr-auto"}>
           <div className={"text-3xl text-white uppercase font-bold tracking-wider"}>
-            Typing
-            <span className={"text-3xl uppercase text-indigo-400"}>Free</span>
+            Open
+            <span className={"text-3xl uppercase text-indigo-400"}>Type</span>
           </div>
         </div>
       </div>

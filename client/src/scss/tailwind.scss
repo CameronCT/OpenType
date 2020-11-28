@@ -7,3 +7,31 @@
 body {
     @apply bg-gray-900;
 }
+
+.game--container {
+    @apply py-32;
+}
+
+.game--text {
+    @apply text-2xl font-mono break-all;
+}
+
+.game--text .word {
+    @apply py-4 font-medium;
+}
+
+.game--text span {
+    @apply p-0.5;
+}
+
+.game--text .space {
+    @apply px-2;
+}
+
+.game--container input {
+    @apply w-full mt-10 px-2 py-1 bg-gray-800 bg-opacity-50 text-gray-400 border-b-2 border-gray-800;
+}
+
+.game--container input:focus {
+    @apply outline-none;
+}

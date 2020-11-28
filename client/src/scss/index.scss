@@ -29133,6 +29133,55 @@ body {
   background-color: rgba(17, 24, 39, var(--tw-bg-opacity));
 }
 
+.game--container {
+  padding-top: 8rem;
+  padding-bottom: 8rem;
+}
+
+.game--text {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  word-break: break-all;
+}
+
+.game--text .word {
+  font-weight: 500;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.game--text span {
+  padding: 0.125rem;
+}
+
+.game--text .space {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.game--container input {
+  --tw-bg-opacity: 1;
+  background-color: rgba(31, 41, 55, var(--tw-bg-opacity));
+  --tw-bg-opacity: 0.5;
+  --tw-border-opacity: 1;
+  border-color: rgba(31, 41, 55, var(--tw-border-opacity));
+  border-bottom-width: 2px;
+  margin-top: 2.5rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  --tw-text-opacity: 1;
+  color: rgba(156, 163, 175, var(--tw-text-opacity));
+  width: 100%;
+}
+
+.game--container input:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
 @media (min-width: 640px) {
   .sm\:container {
     width: 100%;
