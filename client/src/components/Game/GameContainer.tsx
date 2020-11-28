@@ -11,6 +11,12 @@ interface WordData {
   correct: string[];
 }
 
+interface KeystrokeData {
+  trace: number;
+  incorrect: number;
+  correct: number;
+}
+
 interface PlayerData {
   WPM: number;
   Accuracy: number;
@@ -28,9 +34,11 @@ interface IState {
   textInput: string;
   currentIndex: number;
   wordData: WordData;
+  keystrokeData: KeystrokeData;
   playerData: PlayerData;
   gameStatus: number;
   gameTimer: number;
+  gameStart: number;
 }
 
 class GameContainer extends Component<IProps, IState> {
@@ -47,15 +55,23 @@ class GameContainer extends Component<IProps, IState> {
       correct: [],
       incorrect: []
     },
+    keystrokeData: {
+      trace: 0,
+      correct: 0,
+      incorrect: 0
+    },
     playerData: {
       WPM: 0,
       Accuracy: 0
     },
     gameStatus: 0,
-    gameTimer: 0
+    gameTimer: 0,
+    gameStart: 0
   };
 
   countdown: NodeJS.Timeout | undefined;
+
+  refresh: NodeJS.Timeout | undefined;
 
   componentDidMount() {
     const { text } = this.props;
@@ -72,11 +88,31 @@ class GameContainer extends Component<IProps, IState> {
   }
 
   /**
+   * Calculates WPM and Accuracy
+   * @param correct, incorrect, trace
+   */
+  calculatePlayer = (startTime:number, keystrokesCorrect: number, keystrokesIncorrect: number, keystrokesTrace: number) => {
+
+    const timeNow = new Date().getTime();
+    const timeElapsed = (timeNow - startTime);
+    const getGrossWords = keystrokesTrace / 5;
+    const getNetWords = keystrokesCorrect / 5;
+    const minuteTime = ((timeElapsed / 1000) / 60);
+    const getGrossWPM = (getGrossWords / minuteTime);
+    const getNetWPM = (getNetWords / minuteTime);
+
+    return {
+      grossWPM: getGrossWPM,
+      netWPM: getNetWPM
+    };
+  }
+
+  /**
    * Validates word with wordIndex
    * @param v
    */
   validateWord = (v: string) => {
-    const { text, currentIndex, wordData } = this.state;
+    const { text, currentIndex, wordData, keystrokeData, playerData, gameStart } = this.state;
 
     this.setState({ currentIndex: (currentIndex + 1) })
 
@@ -87,21 +123,30 @@ class GameContainer extends Component<IProps, IState> {
       input = v.slice(0, -1);
 
     if (input === text[currentIndex]) {
+      keystrokeData.correct += input.length+1;
       wordData.correct.push(text[currentIndex]);
       isCorrect = true;
-    } else
+    } else {
+      keystrokeData.incorrect += input.length+1;
       wordData.incorrect.push(text[currentIndex]);
+    }
 
+    keystrokeData.trace += input.length+1;
     wordData.trace.push({ value: text[currentIndex], correct: isCorrect });
 
     /*
      * TODO: Calculate WPM
      */
-
+    this.refresh = setInterval(() => {
+      const calculatePlayerData = this.calculatePlayer(gameStart, keystrokeData.correct, keystrokeData.incorrect, keystrokeData.trace);
+      playerData.WPM = calculatePlayerData.grossWPM;
+      this.setState({ playerData });
+    }, 50);
 
     /*
      * Reset Input
      */
+    this.setState({ keystrokeData });
     this.setState({ textInput: '' });
   };
 
@@ -117,7 +162,7 @@ class GameContainer extends Component<IProps, IState> {
       return false;
 
     if (gameStatus === 0) {
-      this.setState({ gameStatus: 1 });
+      this.setState({ gameStatus: 1, gameStart: (new Date().getTime()) });
       this.countdown = setInterval(() => {
         const { gameTimer } = this.state;
 
@@ -134,13 +179,24 @@ class GameContainer extends Component<IProps, IState> {
   };
 
   render() {
-    const { text, textBefore, textAfter, gameTimer, gameStatus, textInput, currentIndex, wordData } = this.state;
+    const { text, textBefore, textAfter, gameTimer, gameStatus, textInput, currentIndex, playerData, wordData } = this.state;
 
     return text && (
       <div className={"game--container"}>
         {gameStatus !== 0 && (
-          <div className={"fixed z-50 bg-black bg-opacity-50 top-0 left-0 right-0 w-64 text-center mx-auto p-4 text-3xl font-bold text-white rounded-b"}>
-            {gameTimer} seconds
+          <div className={"fixed z-50 top-0 left-0 right-0 max-w-screen-sm mx-auto text-center text-xl font-bold text-white"}>
+            <div className={"flex justify-center"}>
+              <div className={"w-48 px-3"}>
+                <div className={"bg-black bg-opacity-50 p-3 rounded-b"}>
+                  {gameTimer} seconds
+                </div>
+              </div>
+              <div className={"w-56 px-3"}>
+                <div className={"bg-black bg-opacity-50 p-3 rounded-b"}>
+                  {playerData.WPM.toFixed(2)} wpm
+                </div>
+              </div>
+            </div>
           </div>
         )}
         <div className={"game--text"}>
