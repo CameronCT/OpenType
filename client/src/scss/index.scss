@@ -29128,8 +29128,9 @@ video {
   animation: bounce 1s infinite;
 }
 
-.btn {
-  padding: 0.75rem;
+body {
+  --tw-bg-opacity: 1;
+  background-color: rgba(17, 24, 39, var(--tw-bg-opacity));
 }
 
 @media (min-width: 640px) {
