@@ -21,7 +21,8 @@ class Home extends Component<{}, IState> {
     }
 
     getText = () => {
-        this.setState({ currentText: quotes[0] });
+        const quoteSelected = Math.floor(Math.random() * Math.floor(quotes.length));
+        this.setState({ currentText: quotes[quoteSelected] });
     }
 
     render() {
@@ -29,7 +30,7 @@ class Home extends Component<{}, IState> {
         const { currentText } = this.state;
 
         return (
-            <div className="max-w-screen-md mx-auto py-32">
+            <div className="app--container max-w-screen-md mx-auto py-32">
                 <Header />
                 <div>
                   {currentText !== null ? (

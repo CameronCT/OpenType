@@ -8,12 +8,16 @@ body {
     @apply bg-gray-900;
 }
 
+.app--container {
+    @apply px-3;
+}
+
 .game--container {
     @apply py-32;
 }
 
 .game--text {
-    @apply text-2xl font-mono break-all;
+    @apply text-2xl font-mono break-all bg-black bg-opacity-10 p-6;
 }
 
 .game--text .word {
@@ -29,7 +33,7 @@ body {
 }
 
 .game--container input {
-    @apply w-full mt-10 px-2 py-1 bg-gray-800 bg-opacity-50 text-gray-400 border-b-2 border-gray-800;
+    @apply w-full mt-10 p-2 bg-gray-800 bg-opacity-10 text-sm tracking-wider text-gray-600 border-b-4 border-gray-800 shadow;
 }
 
 .game--container input:focus {

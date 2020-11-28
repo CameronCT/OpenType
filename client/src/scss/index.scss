@@ -29133,15 +29133,24 @@ body {
   background-color: rgba(17, 24, 39, var(--tw-bg-opacity));
 }
 
+.app--container {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
 .game--container {
   padding-top: 8rem;
   padding-bottom: 8rem;
 }
 
 .game--text {
+  --tw-bg-opacity: 1;
+  background-color: rgba(0, 0, 0, var(--tw-bg-opacity));
+  --tw-bg-opacity: 0.1;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   font-size: 1.5rem;
   line-height: 2rem;
+  padding: 1.5rem;
   word-break: break-all;
 }
 
@@ -29163,17 +29172,19 @@ body {
 .game--container input {
   --tw-bg-opacity: 1;
   background-color: rgba(31, 41, 55, var(--tw-bg-opacity));
-  --tw-bg-opacity: 0.5;
+  --tw-bg-opacity: 0.1;
   --tw-border-opacity: 1;
   border-color: rgba(31, 41, 55, var(--tw-border-opacity));
-  border-bottom-width: 2px;
+  border-bottom-width: 4px;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
   margin-top: 2.5rem;
-  padding-top: 0.25rem;
-  padding-bottom: 0.25rem;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
+  padding: 0.5rem;
+  --tw-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
   --tw-text-opacity: 1;
-  color: rgba(156, 163, 175, var(--tw-text-opacity));
+  color: rgba(75, 85, 99, var(--tw-text-opacity));
+  letter-spacing: 0.05em;
   width: 100%;
 }
 

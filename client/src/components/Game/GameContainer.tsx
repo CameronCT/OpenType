@@ -23,7 +23,8 @@ interface IState {
   textInput: string;
   currentIndex: number;
   wordData: WordData;
-  timeStart: number;
+  gameStatus: number;
+  gameTimer: number;
 }
 
 class GameContainer extends Component<IProps, IState> {
@@ -40,8 +41,11 @@ class GameContainer extends Component<IProps, IState> {
       correct: [],
       incorrect: []
     },
-    timeStart: 0,
-  }
+    gameStatus: 0,
+    gameTimer: 0
+  };
+
+  countdown: NodeJS.Timeout | undefined;
 
   componentDidMount() {
     const { text } = this.props;
@@ -52,12 +56,19 @@ class GameContainer extends Component<IProps, IState> {
     }
   }
 
+  componentWillUnmount() {
+    if (this.countdown)
+      clearInterval(this.countdown);
+  }
+
   /**
    * Validates word with wordIndex
    * @param v
    */
   validateWord = (v: string) => {
     const { text, currentIndex, wordData } = this.state;
+
+    this.setState({ currentIndex: (currentIndex + 1) })
 
     let input:string = v;
     let isCorrect:boolean = false;
@@ -74,7 +85,6 @@ class GameContainer extends Component<IProps, IState> {
     wordData.trace.push({ value: text[currentIndex], correct: isCorrect });
 
     this.setState({ textInput: '' });
-    this.setState({ currentIndex: (currentIndex + 1) })
   };
 
   /**
@@ -82,30 +92,39 @@ class GameContainer extends Component<IProps, IState> {
    * @param {string} e.target.value
    */
   updateInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
-
     const currentValue = e.target.value;
-    const { timeStart, currentIndex, text } = this.state;
+    const { gameStatus, currentIndex, text } = this.state;
 
-    if (timeStart === 0)
-      this.setState({ timeStart: (new Date().getTime()) });
+    if (currentValue === " ")
+      return false;
+
+    if (gameStatus === 0) {
+      this.setState({ gameStatus: 1 });
+      this.countdown = setInterval(() => {
+        const { gameTimer } = this.state;
+
+        this.setState({ gameTimer: (gameTimer + 1) })
+      }, 1000);
+    }
 
     this.setState({ textInput: currentValue})
 
-    if (
-      currentIndex === text.length && currentValue.length === text[currentIndex].length ||
-      currentIndex !== text.length && currentValue.includes(" ")
+    if (currentValue && (currentIndex + 1) === text.length && currentValue === text[currentIndex] ||
+      currentValue && currentIndex !== text.length && currentValue.includes(" ")
     )
       this.validateWord(currentValue);
   };
 
   render() {
-    const { text, textBefore, textAfter, textInput, currentIndex, wordData } = this.state;
-
-    console.log(text[currentIndex]);
+    const { text, textBefore, textAfter, gameTimer, gameStatus, textInput, currentIndex, wordData } = this.state;
 
     return text && (
       <div className={"game--container"}>
+        {gameStatus !== 0 && (
+          <div className={"fixed z-50 bg-black bg-opacity-50 top-0 left-0 right-0 w-64 text-center mx-auto p-4 text-3xl font-bold text-white rounded-b"}>
+            {gameTimer} seconds
+          </div>
+        )}
         <div className={"game--text"}>
           {wordData.trace.map((item, key) => (
             <span key={key} className={`word ${item.correct ? 'text-green-500': 'text-red-500'}`}>
